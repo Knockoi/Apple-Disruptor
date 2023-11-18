@@ -1,4 +1,4 @@
-# EvilAppleJuice ESP32
+# 更改至EvilAppleJuice ESP32  還在修改更適合的功能
 
 iPhone 上的垃圾 BLE 廣告！
 
