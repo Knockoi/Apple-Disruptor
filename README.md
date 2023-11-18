@@ -1,48 +1,36 @@
 # EvilAppleJuice ESP32
 
-Spam BLE advertisements on iPhones!
+iPhone 上的垃圾 BLE 廣告！
 
-|iPhone 15s (latest)|Older iPhones|
-|-------------------|-------------|
-|<video controls width="250" src="https://user-images.githubusercontent.com/6680615/274864225-53ed6d7c-0569-4f22-b55b-bc9973c4bc93.mp4"></video>|<video controls width="250" src="https://user-images.githubusercontent.com/6680615/274864287-c6e871fd-9fdf-4507-ae21-a566beead5cc.mp4"></video>|
+|iPhone15s(最新)|舊款iPhone||iPhone15s(最新)|舊款iPhone||iPhone15s(最新)
 
-Based off of the work of [ronaldstoner](https://github.com/ronaldstoner) in the [AppleJuice repository](https://github.com/ECTO-1A/AppleJuice/blob/e6a61f6a199075f5bb5b1a00768e317571d25bb9/ESP32-Arduino/applejuice.ino).
+通過隨機化優化，只需使用一個 ESP32，它就能讓 iPhone 幾乎毫無用處（只要關閉舊通知，就會出現新通知）。
 
-With the randomization optimizations it can render an iPhone almost useless with a single ESP32 (a new notification as soon as you close the old one).
+已在以下設備上證實：
+* iPhone 14 Pro（運行 iOS 16.6.1）
+* iPhone 13 Pro（運行 iOS 系統，具體待定）
+* iPhone 11（運行 iOS 16.6.1）
+* iPhone X（運行 iOS 14.8 (18H17)）- 僅支持 "AppleTV 鍵盤"、"電視色彩平衡"、"AppleTV 設置"、"AppleTV Homekit 設置 "和 "AppleTV 新用戶"。
 
-Confirmed on:
-* iPhone 14 Pro (running iOS 16.6.1)
-* iPhone 13 Pro (TBD which iOS)
-* iPhone 11 (running iOS 16.6.1)
-* iPhone X (running iOS 14.8 (18H17)) - only "AppleTV Keyboard", "TV Color Balance", "AppleTV Setup", "AppleTV Homekit Setup", "AppleTV New User".
+無法在以下設備上運行
+* iPhone 4S（運行 iOS 10.3 (14E277)
 
-Not working on:
-* iPhone 4S (running iOS 10.3 (14E277))
+其他觀察結果：
+* 鍵盤打開/攝像頭打開時似乎不會產生通知
 
-Other observations:
-* Doesn't seem to spawn notifications if Keyboard is open / Camera is open
+### 顯著差異
 
-### Video Demo
+該實現做出了以下更改：
 
-Single ESP32 vs. iPhone 14 Pro @ iOS 16.6.1
+* 隨機源 MAC 地址（包括 `BLE_ADDR_TYPE_RANDOM`）。
+* 隨機選擇 BLE 廣告類型（[這可能會導致更多成功](https://github.com/ECTO-1A/AppleJuice/pull/25)
+* 從可能的設備中隨機選擇一個
 
-https://github.com/ECTO-1A/AppleJuice/assets/6680615/47466ed6-03c9-43b2-a0d0-aac2e2aaa228
+每次運行時都會進行這些隨機選擇（默認每秒重新發布一次廣告）。
 
-## Notable Differences
+考慮到 29 種設備和 3 種廣告類型，總共有 87 種可能的廣告（忽略隨機源 MAC），其中每秒廣播一次。
 
-This implementation makes the following changes:
+### 使用方法
 
-* Random source MAC address (including `BLE_ADDR_TYPE_RANDOM`)
-* Randomly pick BLE Advertisement Type ([this may lead to more success](https://github.com/ECTO-1A/AppleJuice/pull/25))
-* Randomly pick one of the possible devices
-
-And it makes these random choices every time it runs (default re-advertise every second).
-
-Given the 29 devices and the 3 advertisement types, there are a total of 87 unique possible advertisements (ignoring the random source MAC) possible, of which one is broadcast every second.
-
-## Usage
-
-Clone the repo, and easiest would be to use VS Code w/ PlatformIO to upload it to your ESP32.
-
-This project has been tested on an [ESP32-C3 from AirM2M](https://wiki.luatos.com/chips/esp32c3/board.html).
+打開 scr裡面的ino 檔案後點擊項目，利用添加文件點選 scr裡面的 hpp 檔案，等一接上電源就可使用了！
 
